@@ -4,16 +4,19 @@ import { useCallback, useRef, useState } from "react";
 export function useVoice() {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const recRef = useRef<SpeechRecognition | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recRef = useRef<any>(null);
 
   const start = useCallback(() => {
-    const SR = window.SpeechRecognition || (window as unknown as { webkitSpeechRecognition: typeof SpeechRecognition }).webkitSpeechRecognition;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) return;
     const rec = new SR();
     rec.lang = "en-IN";
     rec.interimResults = true;
-    rec.onresult = (e) => {
-      const text = Array.from(e.results).map((r) => r[0].transcript).join("");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rec.onresult = (e: any) => {
+      const text = Array.from(e.results).map((r: any) => r[0].transcript).join("");
       setTranscript(text);
     };
     rec.onend = () => setListening(false);
@@ -29,6 +32,7 @@ export function useVoice() {
   }, []);
 
   const speak = useCallback((text: string) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const utt = new SpeechSynthesisUtterance(text);
     utt.lang = "en-IN";

@@ -29,7 +29,7 @@ export default function RewardsMgmtPage() {
           {[{ key: "points_per_rupee", label: "Points per ₹1" }, { key: "points_value", label: "₹ value per point" }, { key: "min_redemption", label: "Min redemption pts" }].map(({ key, label }) => (
             <div key={key}>
               <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: 6 }}>{label}</p>
-              <input type="number" step="0.01" value={(config as Record<string, number>)[key]} onChange={(e) => setConfig((c) => ({ ...c, [key]: Number(e.target.value) }))}
+              <input type="number" step="0.01" value={(config as unknown as Record<string, number>)[key]} onChange={(e) => setConfig((c) => ({ ...c, [key]: Number(e.target.value) }))}
                 style={{ width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid var(--glass-border)", borderRadius: "var(--radius-sm)", color: "var(--text-primary)", fontSize: "0.88rem", outline: "none" }} />
             </div>
           ))}
