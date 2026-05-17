@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.routers import (coupons, help, menu, orders, payment, reviews,
-                          session, settings as settings_router, ws)
+                          rewards, session, settings as settings_router, ws)
 from app.routers.admin import (analytics, auth, coupons as admin_coupons,
                                 help as admin_help, menu as admin_menu,
                                 offers, orders as admin_orders, premium,

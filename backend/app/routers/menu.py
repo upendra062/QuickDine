@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models.menu import MenuCategory, MenuItem
 from app.models.review import Review
-from app.schemas.menu import MenuItemOut, MenuOut, ReviewOut
+from app.schemas.menu import MenuItemOut, MenuOut
+from app.schemas.review import ReviewOut
 
 router = APIRouter(prefix="/api/menu", tags=["menu"])
 

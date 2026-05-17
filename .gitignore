@@ -36,3 +36,6 @@ Thumbs.db
 
 # Archives (keep them out of git)
 *.zip
+
+# Credentials (never commit)
+login.md

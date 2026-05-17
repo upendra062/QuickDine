@@ -62,7 +62,7 @@ async def seed():
         # Admin
         admin = await db.get(Admin, 1)
         if not admin:
-            db.add(Admin(username="admin", password_hash=hash_password("nova123"), role="admin"))
+            db.add(Admin(username="admin", password_hash=hash_password("Admin@2025"), role="admin"))
 
         # Tables (20 tables)
         for i in range(1, 21):
