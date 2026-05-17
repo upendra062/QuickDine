@@ -5,6 +5,12 @@ import { useSession } from "@/store/sessionStore";
 import { useCart } from "@/store/cartStore";
 import BottomNav from "@/components/layout/BottomNav";
 
+const MENU_ITEMS = [
+  { label: "📋  My Orders",    href: "/orders" },
+  { label: "🏆  Rewards",      href: "/rewards" },
+  { label: "📍  Track Order",  href: "/tracking" },
+];
+
 export default function ProfilePage() {
   const router = useRouter();
   const { name, phone, tableId, clear } = useSession();
@@ -25,29 +31,37 @@ export default function ProfilePage() {
 
   return (
     <div className="page">
-      <div style={{ padding: "56px 20px 24px", textAlign: "center", background: "linear-gradient(135deg,rgba(99,102,241,0.08),transparent)", borderBottom: "1px solid var(--glass-border)" }}>
-        <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,var(--accent),var(--accent-2))", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", fontFamily: "var(--font-main)", fontWeight: 900, fontSize: "1.6rem", color: "#000" }}>{initials}</div>
-        <h1 style={{ fontFamily: "var(--font-main)", fontWeight: 900, fontSize: "1.4rem" }}>{name || "Guest"}</h1>
-        {phone && <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{phone}</p>}
-        <span style={{ fontSize: "0.75rem", padding: "4px 12px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 99, color: "var(--text-muted)" }}>Table {tableId}</span>
+      {/* Profile header */}
+      <div style={{ padding: "52px 20px 24px", textAlign: "center", background: "linear-gradient(160deg,#1A0E06,var(--bg))", borderBottom: "1px solid var(--border)" }}>
+        <div style={{ width: 76, height: 76, borderRadius: "50%", background: "linear-gradient(135deg,var(--orange),var(--amber))", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", fontFamily: "var(--font)", fontWeight: 900, fontSize: "1.7rem", color: "#fff", boxShadow: "0 6px 24px rgba(249,115,22,0.35)" }}>{initials}</div>
+        <h1 style={{ fontFamily: "var(--font)", fontWeight: 900, fontSize: "1.4rem", marginBottom: 4 }}>{name || "Guest"}</h1>
+        {phone && <p style={{ color: "var(--text-3)", fontSize: "0.84rem", marginBottom: 8 }}>{phone}</p>}
+        <span style={{ fontSize: "0.74rem", padding: "4px 14px", background: "rgba(249,115,22,0.10)", border: "1px solid rgba(249,115,22,0.20)", borderRadius: 99, color: "var(--orange)", fontWeight: 700 }}>🪑 Table {tableId}</span>
       </div>
+
       <div className="page-content">
-        {[
-          { label: "📋 My Orders", href: "/orders" },
-          { label: "🏆 Rewards", href: "/rewards" },
-          { label: "📍 Track Order", href: "/tracking" },
-        ].map(({ label, href }) => (
-          <Link key={href} href={href} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 18px", marginBottom: 10, borderRadius: "var(--radius-md)", background: "var(--glass)", border: "1px solid var(--glass-border)", textDecoration: "none", color: "var(--text-primary)", fontWeight: 600 }}>
-            {label} <span style={{ color: "var(--text-muted)" }}>›</span>
-          </Link>
-        ))}
-        <button onClick={toggleTheme} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 18px", marginBottom: 10, borderRadius: "var(--radius-md)", background: "var(--glass)", border: "1px solid var(--glass-border)", color: "var(--text-primary)", fontWeight: 600, cursor: "pointer" }}>
-          🎨 Toggle Theme <span style={{ color: "var(--text-muted)" }}>›</span>
-        </button>
-        <button onClick={endSession} style={{ width: "100%", padding: "14px", marginTop: 20, borderRadius: "var(--radius-md)", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#ef4444", fontWeight: 700, cursor: "pointer" }}>
+        {/* Nav links */}
+        <div className="card" style={{ overflow: "hidden", marginBottom: 14 }}>
+          {MENU_ITEMS.map(({ label, href }, idx) => (
+            <Link key={href} href={href} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 18px", borderBottom: idx < MENU_ITEMS.length - 1 ? "1px solid var(--border)" : "none", textDecoration: "none", color: "var(--text-1)", fontWeight: 600, fontSize: "0.9rem", transition: "var(--transition)" }}>
+              {label}
+              <span style={{ color: "var(--text-3)", fontSize: "1rem" }}>›</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="card" style={{ overflow: "hidden", marginBottom: 14 }}>
+          <button onClick={toggleTheme} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 18px", background: "transparent", border: "none", color: "var(--text-1)", fontWeight: 600, fontSize: "0.9rem", cursor: "pointer", textAlign: "left", fontFamily: "var(--font)" }}>
+            🎨  Toggle Theme
+            <span style={{ color: "var(--text-3)", fontSize: "1rem" }}>›</span>
+          </button>
+        </div>
+
+        <button onClick={endSession} style={{ width: "100%", padding: "15px", borderRadius: "var(--radius-lg)", background: "rgba(239,68,68,0.06)", border: "1.5px solid rgba(239,68,68,0.20)", color: "var(--red)", fontWeight: 800, cursor: "pointer", fontFamily: "var(--font)", fontSize: "0.9rem" }}>
           End Session
         </button>
       </div>
+
       <BottomNav />
     </div>
   );

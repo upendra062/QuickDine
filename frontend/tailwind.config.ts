@@ -6,13 +6,15 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        main: ["Outfit", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        main: ["Plus Jakarta Sans", "sans-serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
       },
       colors: {
         accent: "var(--accent)",
         "accent-2": "var(--accent-2)",
         "accent-3": "var(--accent-3)",
+        orange: "var(--orange)",
+        amber: "var(--amber)",
         bg: "var(--bg)",
         "bg-2": "var(--bg-2)",
         "bg-3": "var(--bg-3)",

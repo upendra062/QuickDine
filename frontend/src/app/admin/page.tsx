@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
           <div style={{ padding: "10px 14px", background: "rgba(0,255,135,0.05)", border: "1px solid rgba(0,255,135,0.15)", borderRadius: "var(--radius-sm)", fontSize: "0.78rem", color: "var(--text-secondary)" }}>
-            Demo: <strong style={{ color: "var(--accent)" }}>admin</strong> / <strong style={{ color: "var(--accent)" }}>nova123</strong>
+            Demo: <strong style={{ color: "var(--orange)" }}>admin</strong> / <strong style={{ color: "var(--orange)" }}>Admin@2025</strong>
           </div>
           <button type="submit" className="btn-primary" disabled={loading}>{loading ? "Signing in…" : "Sign In →"}</button>
         </form>

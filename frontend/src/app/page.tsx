@@ -15,10 +15,14 @@ function WelcomePage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-  const [restName, setRestName] = useState("NOVA Eats");
+  const [restName, setRestName] = useState("Rasoi");
+  const [tagline, setTagline] = useState("Crafted with soul, served with pride");
 
   useEffect(() => {
-    api.get("/api/settings").then((r) => { if (r.data.rest_name) setRestName(r.data.rest_name); }).catch(() => {});
+    api.get("/api/settings").then((r) => {
+      if (r.data.rest_name) setRestName(r.data.rest_name);
+      if (r.data.tagline) setTagline(r.data.tagline);
+    }).catch(() => {});
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -26,55 +30,60 @@ function WelcomePage() {
     if (!name.trim()) { showToast("Please enter your name", "error"); return; }
     setLoading(true);
     try {
-      const { data } = await api.post("/api/sessions", { name: name.trim(), phone: phone.trim() || null, table_id: tableId });
+      const { data } = await api.post("/api/sessions", {
+        name: name.trim(), phone: phone.trim() || null, table_id: tableId,
+      });
       sessionStorage.setItem("token", data.access_token);
       setSession({ name: data.name, phone: data.phone, tableId: data.table_id, token: data.access_token, isPremium: data.is_premium });
       router.push("/home");
     } catch {
       showToast("Could not start session. Try again.", "error");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }
 
   return (
-    <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, background: "var(--bg)" }}>
+    <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", background: "var(--bg)" }}>
       <ToastContainer />
-      <div style={{ marginBottom: 32, textAlign: "center" }}>
-        <div style={{ fontFamily: "var(--font-main)", fontWeight: 900, fontSize: "2rem" }}>
-          {restName.split(" ")[0]}<span style={{ color: "var(--accent)" }}>{restName.split(" ").slice(1).join(" ")}</span>
+      {/* Hero */}
+      <div style={{ position: "relative", height: "42dvh", flexShrink: 0, overflow: "hidden", background: "linear-gradient(160deg,#1A0E06 0%,#2D1A08 55%,#180C04 100%)" }}>
+        <div style={{ position: "absolute", top: -70, right: -70, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle,rgba(249,115,22,0.20) 0%,transparent 70%)" }} />
+        <div style={{ position: "absolute", bottom: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: "radial-gradient(circle,rgba(245,158,11,0.15) 0%,transparent 70%)" }} />
+        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: "0 24px", textAlign: "center" }}>
+          <div style={{ width: 72, height: 72, borderRadius: 20, background: "linear-gradient(135deg,var(--orange),var(--amber))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2rem", marginBottom: 16, boxShadow: "0 8px 32px rgba(249,115,22,0.35)" }}>🍛</div>
+          <h1 style={{ fontFamily: "var(--font)", fontWeight: 900, fontSize: "2.4rem", color: "var(--text-1)", letterSpacing: "-0.02em", lineHeight: 1 }}>{restName}</h1>
+          <p style={{ color: "var(--text-2)", fontSize: "0.84rem", fontStyle: "italic", marginTop: 8 }}>{tagline}</p>
+          <div style={{ marginTop: 18, padding: "5px 16px", borderRadius: 99, background: "rgba(249,115,22,0.12)", border: "1px solid rgba(249,115,22,0.25)" }}>
+            <span style={{ fontSize: "0.74rem", color: "var(--orange)", fontWeight: 700 }}>🪑 Table {tableId} · Scan Verified</span>
+          </div>
         </div>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: 4 }}>Table {tableId} · QR Verified</p>
       </div>
-      <div className="glass-card" style={{ width: "100%", maxWidth: 420, padding: "32px 28px" }}>
-        <h1 style={{ fontFamily: "var(--font-main)", fontWeight: 900, fontSize: "1.6rem", marginBottom: 8 }}>
-          Welcome to the<br /><span className="gradient-text">future of dining</span>
-        </h1>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: 24 }}>Enter your details to begin</p>
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      {/* Form sheet */}
+      <div style={{ flex: 1, background: "var(--bg)", borderRadius: "28px 28px 0 0", marginTop: -24, padding: "28px 24px 40px" }}>
+        <div style={{ width: 40, height: 4, background: "var(--border)", borderRadius: 99, margin: "0 auto 24px" }} />
+        <h2 style={{ fontFamily: "var(--font)", fontWeight: 800, fontSize: "1.4rem", marginBottom: 4 }}>Welcome in 👋</h2>
+        <p style={{ color: "var(--text-2)", fontSize: "0.84rem", marginBottom: 24 }}>Tell us your name to get started</p>
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div className="field-wrap">
-            <svg className="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <svg className="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
             <input type="text" placeholder="Your name *" value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
           <div className="field-wrap">
-            <svg className="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 13.5 19.79 19.79 0 0 1 1.08 5 2 2 0 0 1 3 3h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 10.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <svg className="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 13.5 19.79 19.79 0 0 1 1.08 5 2 2 0 0 1 3 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 10.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
             <input type="tel" placeholder="Phone (optional — earn rewards)" value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="numeric" />
           </div>
-          <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? "Starting…" : "Let's Begin →"}
+          <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: 4 }}>
+            {loading ? "Starting…" : "Begin Dining →"}
           </button>
         </form>
-        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 16, flexWrap: "wrap" }}>
-          {["🎙️ Voice Order", "⚡ Instant", "🏆 Rewards", "📍 Live Track"].map((f) => (
-            <span key={f} style={{ fontSize: "0.72rem", padding: "4px 10px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 99, color: "var(--text-muted)" }}>{f}</span>
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 20, flexWrap: "wrap" }}>
+          {["🎙️ Voice", "⚡ Instant", "🏆 Rewards", "📍 Tracking"].map((f) => (
+            <span key={f} style={{ fontSize: "0.72rem", padding: "4px 12px", background: "var(--bg-2)", border: "1px solid var(--border)", borderRadius: 99, color: "var(--text-3)" }}>{f}</span>
           ))}
         </div>
+        <a href="/admin" style={{ display: "block", textAlign: "center", marginTop: 24, color: "var(--text-3)", fontSize: "0.76rem", textDecoration: "none" }}>Staff Login →</a>
       </div>
-      <a href="/admin" style={{ marginTop: 20, color: "var(--text-muted)", fontSize: "0.78rem", textDecoration: "none" }}>Staff / Admin Login →</a>
     </div>
   );
 }
 
-export default function Page() {
-  return <Suspense><WelcomePage /></Suspense>;
-}
+export default function Page() { return <Suspense><WelcomePage /></Suspense>; }

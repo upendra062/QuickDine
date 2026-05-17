@@ -8,7 +8,7 @@ import api from "@/lib/api";
 import { useSession } from "@/store/sessionStore";
 
 interface Category { id: string; name: string; emoji: string; }
-interface MenuItem { id: number; cat_id: string; name: string; description: string; price: number; is_veg: boolean; tag?: string | null; img_url: string; avg_rating?: number; review_count?: number; available: boolean; }
+interface MenuItem  { id: number; cat_id: string; name: string; description: string; price: number; is_veg: boolean; tag?: string | null; img_url: string; avg_rating?: number; review_count?: number; available: boolean; }
 
 export default function MenuPage() {
   const router = useRouter();
@@ -18,20 +18,13 @@ export default function MenuPage() {
   const [premiumPricing, setPremiumPricing] = useState<Record<number, number>>({});
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "veg" | "nonveg">("all");
-  const [activeCat, setActiveCat] = useState<string>("all");
+  const [activeCat, setActiveCat] = useState("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!sessionStorage.getItem("token")) { router.push("/"); return; }
-    api.get("/api/menu").then((r) => {
-      setCategories(r.data.categories);
-      setItems(r.data.items);
-      setLoading(false);
-    }).catch(() => setLoading(false));
-
-    if (isPremium && phone) {
-      api.get("/api/admin/premium/pricing").then((r) => setPremiumPricing(r.data)).catch(() => {});
-    }
+    api.get("/api/menu").then((r) => { setCategories(r.data.categories); setItems(r.data.items); setLoading(false); }).catch(() => setLoading(false));
+    if (isPremium && phone) api.get("/api/admin/premium/pricing").then((r) => setPremiumPricing(r.data)).catch(() => {});
   }, [router, isPremium, phone]);
 
   const filtered = useMemo(() => items.filter((i) => {
@@ -46,37 +39,44 @@ export default function MenuPage() {
   return (
     <div className="page">
       <ToastContainer />
-      <div style={{ position: "sticky", top: 0, zIndex: 40, background: "rgba(9,14,26,0.9)", backdropFilter: "blur(20px)", borderBottom: "1px solid var(--glass-border)", padding: "14px 20px" }}>
+
+      {/* Sticky header */}
+      <div style={{ position: "sticky", top: 0, zIndex: 40, background: "var(--bg)", borderBottom: "1px solid var(--border)", padding: "14px 18px 12px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-          <button onClick={() => router.back()} style={{ background: "none", border: "none", color: "var(--text-primary)", cursor: "pointer", fontSize: "1.2rem" }}>←</button>
-          <span style={{ fontFamily: "var(--font-main)", fontWeight: 800, fontSize: "1.3rem", flex: 1 }}>Menu</span>
+          <button onClick={() => router.back()} style={{ background: "var(--bg-2)", border: "1px solid var(--border)", borderRadius: "50%", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--text-1)", fontSize: "1rem" }}>←</button>
+          <span style={{ fontFamily: "var(--font)", fontWeight: 800, fontSize: "1.3rem", flex: 1 }}>Our Menu</span>
           {isPremium && <span className="badge">⭐ Premium</span>}
         </div>
-        <input
-          type="text" placeholder="🔍 Search dishes…" value={search} onChange={(e) => setSearch(e.target.value)}
-          style={{ width: "100%", padding: "10px 16px", background: "var(--glass)", border: "1px solid var(--glass-border)", borderRadius: 99, color: "var(--text-primary)", fontSize: "0.85rem", outline: "none", marginBottom: 10 }}
-        />
-        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
+
+        {/* Search */}
+        <div style={{ position: "relative", marginBottom: 10 }}>
+          <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", fontSize: "0.9rem", color: "var(--text-3)" }}>🔍</span>
+          <input
+            type="text" placeholder="Search dishes…" value={search} onChange={(e) => setSearch(e.target.value)}
+            style={{ width: "100%", padding: "10px 16px 10px 40px", background: "var(--bg-2)", border: "1.5px solid var(--border)", borderRadius: 99, color: "var(--text-1)", fontSize: "0.85rem", outline: "none", fontFamily: "var(--font)" }}
+          />
+        </div>
+
+        {/* Filters */}
+        <div className="chips-row">
           {[{ id: "all", label: "All" }, { id: "veg", label: "🟢 Veg" }, { id: "nonveg", label: "🔴 Non-Veg" }].map((f) => (
-            <button key={f.id} onClick={() => setFilter(f.id as typeof filter)} style={{ flexShrink: 0, padding: "5px 14px", borderRadius: 99, border: "1px solid var(--glass-border)", background: filter === f.id ? "var(--accent)" : "var(--glass)", color: filter === f.id ? "#000" : "var(--text-secondary)", fontSize: "0.78rem", fontWeight: 600, cursor: "pointer" }}>
-              {f.label}
-            </button>
+            <button key={f.id} className={`chip${filter === f.id ? " active" : ""}`} onClick={() => setFilter(f.id as typeof filter)}>{f.label}</button>
           ))}
-          <div style={{ width: 1, background: "var(--glass-border)", margin: "0 4px" }} />
-          {[{ id: "all", label: "All" }, ...categories].map((c) => (
-            <button key={c.id} onClick={() => setActiveCat(c.id)} style={{ flexShrink: 0, padding: "5px 14px", borderRadius: 99, border: "1px solid var(--glass-border)", background: activeCat === c.id ? "rgba(0,255,135,0.1)" : "var(--glass)", color: activeCat === c.id ? "var(--accent)" : "var(--text-secondary)", fontSize: "0.78rem", fontWeight: 600, cursor: "pointer" }}>
-              {"emoji" in c ? `${(c as Category).emoji} ${c.name}` : "All"}
-            </button>
+          <div style={{ width: 1, background: "var(--border)", margin: "0 4px", flexShrink: 0 }} />
+          <button className={`chip${activeCat === "all" ? " active" : ""}`} onClick={() => setActiveCat("all")}>All</button>
+          {categories.map((c) => (
+            <button key={c.id} className={`chip${activeCat === c.id ? " active" : ""}`} onClick={() => setActiveCat(c.id)}>{c.emoji} {c.name}</button>
           ))}
         </div>
       </div>
+
       <div className="page-content" style={{ paddingTop: 16 }}>
-        {loading ? <p style={{ color: "var(--text-muted)", textAlign: "center", paddingTop: 40 }}>Loading menu…</p> : (
+        {loading ? (
+          <div style={{ textAlign: "center", paddingTop: 60, color: "var(--text-3)" }}>Loading menu…</div>
+        ) : (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            {filtered.map((item) => (
-              <MenuCard key={item.id} item={item} premiumPrice={premiumPricing[item.id] ?? null} />
-            ))}
-            {filtered.length === 0 && <p style={{ color: "var(--text-muted)", gridColumn: "span 2", textAlign: "center", paddingTop: 40 }}>No items found</p>}
+            {filtered.map((item) => <MenuCard key={item.id} item={item} premiumPrice={premiumPricing[item.id] ?? null} />)}
+            {filtered.length === 0 && <p style={{ color: "var(--text-3)", gridColumn: "span 2", textAlign: "center", paddingTop: 40 }}>No dishes found</p>}
           </div>
         )}
       </div>
