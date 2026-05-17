@@ -14,16 +14,20 @@ declare global {
 export default function PaymentPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [orderId] = useState(() => sessionStorage.getItem("pending_order_id") || "");
-  const [amount] = useState(() => Number(sessionStorage.getItem("pending_order_total") || 0));
+  const [orderId, setOrderId] = useState("");
+  const [amount, setAmount] = useState(0);
 
   useEffect(() => {
-    if (!orderId) router.push("/cart");
+    const id = sessionStorage.getItem("pending_order_id") || "";
+    const amt = Number(sessionStorage.getItem("pending_order_total") || 0);
+    setOrderId(id);
+    setAmount(amt);
+    if (!id) { router.push("/cart"); return; }
     const s = document.createElement("script");
     s.src = "https://checkout.razorpay.com/v1/checkout.js";
     document.body.appendChild(s);
     return () => { document.body.removeChild(s); };
-  }, [orderId, router]);
+  }, [router]);
 
   async function pay() {
     setLoading(true);
