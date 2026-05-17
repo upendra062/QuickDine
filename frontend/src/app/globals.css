@@ -41,6 +41,43 @@
   --font-body:      'Plus Jakarta Sans', sans-serif;
 }
 
+/* ── Chalk theme (White Mix — premium clean look) ────────────────── */
+[data-theme="chalk"] {
+  --orange:       #E85D04;
+  --amber:        #F48C06;
+  --red:          #D62828;
+  --green:        #1A7431;
+  --bg:           #FFFFFF;
+  --bg-2:         #F7F3EE;
+  --bg-3:         #FDFAF7;
+  --surface:      #FFFFFF;
+  --border:       rgba(0,0,0,0.08);
+  --border-hot:   rgba(232,93,4,0.32);
+  --text-1:       #180C04;
+  --text-2:       rgba(24,12,4,0.62);
+  --text-3:       rgba(24,12,4,0.36);
+  --glow:         rgba(232,93,4,0.14);
+  --radius-sm:    12px;
+  --radius-md:    16px;
+  --radius-lg:    22px;
+  --radius-xl:    30px;
+  --transition:   all 0.25s cubic-bezier(0.4,0,0.2,1);
+  --font:         'Plus Jakarta Sans', sans-serif;
+  --nav-h:        68px;
+  --accent:         #E85D04;
+  --accent-2:       #F48C06;
+  --accent-3:       #D62828;
+  --accent-glow:    rgba(232,93,4,0.14);
+  --glass:          rgba(255,255,255,0.92);
+  --glass-border:   rgba(0,0,0,0.08);
+  --text-primary:   #180C04;
+  --text-secondary: rgba(24,12,4,0.62);
+  --text-muted:     rgba(24,12,4,0.36);
+  --card-shadow:    0 2px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  --font-main:      'Plus Jakarta Sans', sans-serif;
+  --font-body:      'Plus Jakarta Sans', sans-serif;
+}
+
 /* ── Light theme ─────────────────────────────────────────────────── */
 [data-theme="light"] {
   --orange:       #EA580C;
@@ -109,7 +146,13 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
 .card, .glass-card {
   background:var(--bg-3); border:1px solid var(--border);
   border-radius:var(--radius-lg);
+  box-shadow: var(--card-shadow, none);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+[data-theme="chalk"] .card,
+[data-theme="chalk"] .glass-card {
+  background: #FFFFFF;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
 }
 .card-hover:hover {
   transform: translateY(-3px);

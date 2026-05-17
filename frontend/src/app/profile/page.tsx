@@ -15,8 +15,9 @@ const MENU_ITEMS = [
 
 const THEMES = [
   { key: "dark",    icon: "🌑", label: "Dark" },
+  { key: "chalk",   icon: "🤍", label: "Chalk" },
   { key: "light",   icon: "☀️", label: "Light" },
-  { key: "premium", icon: "👑", label: "Premium" },
+  { key: "premium", icon: "👑", label: "Gold" },
 ] as const;
 
 export default function ProfilePage() {
@@ -75,24 +76,51 @@ export default function ProfilePage() {
         {/* Theme switcher */}
         <div className="card anim-fade-up anim-s1" style={{ padding:"16px 18px", marginBottom:14 }}>
           <p style={{ fontWeight:700, fontSize:"0.84rem", marginBottom:12, color:"var(--text-2)" }}>🎨 Appearance</p>
-          <div style={{ display:"flex", gap:8 }}>
-            {THEMES.map(({ key, icon, label }) => (
-              <button
-                key={key}
-                onClick={() => applyTheme(key)}
-                className={`theme-btn ${activeTheme === "premium" && key === "premium" ? "active-premium" : activeTheme === key ? "active" : ""}`}
-              >
-                <span style={{ fontSize:"1.3rem" }}>{icon}</span>
-                <span>{label}</span>
-                {key === "premium" && activeTheme !== "premium" && (
-                  <span style={{ fontSize:"0.54rem", color:"#C9A227", fontWeight:800, letterSpacing:"0.05em" }}>GOLD</span>
-                )}
-              </button>
-            ))}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8 }}>
+            {THEMES.map(({ key, icon, label }) => {
+              const isActive = activeTheme === key;
+              const isPremiumKey = key === "premium";
+              const isChalkKey  = key === "chalk";
+              return (
+                <button
+                  key={key}
+                  onClick={() => applyTheme(key)}
+                  style={{
+                    padding:"12px 4px", borderRadius:"var(--radius-md)", cursor:"pointer",
+                    fontFamily:"var(--font)", fontWeight:700, fontSize:"0.75rem",
+                    display:"flex", flexDirection:"column", alignItems:"center", gap:5,
+                    border: isActive
+                      ? isPremiumKey ? "1.5px solid #C9A227"
+                      : isChalkKey  ? "1.5px solid #E85D04"
+                      : "1.5px solid var(--orange)"
+                      : "1.5px solid var(--border)",
+                    background: isActive
+                      ? isPremiumKey ? "rgba(201,162,39,0.12)"
+                      : isChalkKey  ? "rgba(232,93,4,0.08)"
+                      : "rgba(249,115,22,0.09)"
+                      : "var(--bg-2)",
+                    color: isActive
+                      ? isPremiumKey ? "#C9A227"
+                      : isChalkKey  ? "#E85D04"
+                      : "var(--orange)"
+                      : "var(--text-2)",
+                    transition:"var(--transition)",
+                  }}
+                >
+                  <span style={{ fontSize:"1.4rem" }}>{icon}</span>
+                  <span>{label}</span>
+                </button>
+              );
+            })}
           </div>
           {activeTheme === "premium" && (
             <p className="anim-fade-up" style={{ fontSize:"0.72rem", color:"#C9A227", marginTop:10, textAlign:"center", letterSpacing:"0.04em" }}>
-              ✨ Premium Gold — exclusive for our finest guests
+              👑 Premium Gold — exclusive for our finest guests
+            </p>
+          )}
+          {activeTheme === "chalk" && (
+            <p className="anim-fade-up" style={{ fontSize:"0.72rem", color:"#E85D04", marginTop:10, textAlign:"center" }}>
+              🤍 Chalk — clean white look, perfect for bright environments
             </p>
           )}
         </div>
