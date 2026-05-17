@@ -15,12 +15,13 @@ engine = create_async_engine(settings.DATABASE_URL)
 Session = async_sessionmaker(engine, expire_on_commit=False)
 
 CATEGORIES = [
-    {"id": "starters",  "name": "Starters",     "emoji": "🔥", "color": "#F97316", "display_order": 1},
-    {"id": "main",      "name": "Main Course",   "emoji": "🍛", "color": "#F59E0B", "display_order": 2},
+    {"id": "starters",  "name": "Starters",      "emoji": "🔥", "color": "#F97316", "display_order": 1},
+    {"id": "main",      "name": "Main Course",    "emoji": "🍛", "color": "#F59E0B", "display_order": 2},
     {"id": "breads",    "name": "Breads & Rice",  "emoji": "🫓", "color": "#EAB308", "display_order": 3},
     {"id": "desserts",  "name": "Desserts",       "emoji": "🍮", "color": "#EC4899", "display_order": 4},
     {"id": "drinks",    "name": "Drinks",         "emoji": "🥤", "color": "#22C55E", "display_order": 5},
     {"id": "combos",    "name": "Chef Specials",  "emoji": "👨‍🍳", "color": "#A855F7", "display_order": 6},
+    {"id": "bar",       "name": "Premium Bar",    "emoji": "🍷", "color": "#7C3AED", "display_order": 7},
 ]
 
 ITEMS = [
@@ -137,6 +138,55 @@ ITEMS = [
         "description": "Dal Bukhara + Palak Paneer + Biryani + 3 Breads + Dessert + Drink",
         "price": 675, "is_veg": True, "tag": "Popular",
         "img_url": "https://images.unsplash.com/photo-1512058533999-840d4e3c5a4f?w=400&q=80",
+    },
+    # ── Premium Bar ───────────────────────────────────────────────────────────
+    {
+        "cat_id": "bar", "name": "Kingfisher Ultra", "display_order": 1,
+        "description": "India's smoothest premium lager — ice-cold, light-bodied with a crisp clean finish",
+        "price": 280, "is_veg": True, "tag": "Bestseller",
+        "img_url": "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Hoegaarden White", "display_order": 2,
+        "description": "Belgian wheat beer with orange peel and coriander — hazy, refreshing, aromatic",
+        "price": 380, "is_veg": True, "tag": "Craft",
+        "img_url": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Cabernet Sauvignon", "display_order": 3,
+        "description": "Full-bodied Chilean red — rich dark cherry, cassis and toasted oak on the finish",
+        "price": 750, "is_veg": True, "tag": "Premium",
+        "img_url": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Sauvignon Blanc", "display_order": 4,
+        "description": "New Zealand white wine — crisp citrus and gooseberry with a mineral, lingering finish",
+        "price": 680, "is_veg": True,
+        "img_url": "https://images.unsplash.com/photo-1543362906-acfc16c67564?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Glenfiddich 12yr", "display_order": 5,
+        "description": "Speyside single malt Scotch — honeyed vanilla, fresh pear and subtle oak complexity",
+        "price": 1200, "is_veg": True, "tag": "Scotch",
+        "img_url": "https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Johnnie Walker Black", "display_order": 6,
+        "description": "Aged 12 years — deep, smoky and complex with dried fruit and long warm finish",
+        "price": 980, "is_veg": True, "tag": "Scotch",
+        "img_url": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Signature Negroni", "display_order": 7,
+        "description": "Bombay Sapphire, sweet vermouth, Campari — stirred, served over one large ice cube",
+        "price": 480, "is_veg": True, "tag": "Signature",
+        "img_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&q=80",
+    },
+    {
+        "cat_id": "bar", "name": "Smoky Old Fashioned", "display_order": 8,
+        "description": "Bourbon, demerara, Angostura bitters — table-side smoked with applewood chips",
+        "price": 520, "is_veg": True, "tag": "Chef Pick",
+        "img_url": "https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&q=80",
     },
 ]
 

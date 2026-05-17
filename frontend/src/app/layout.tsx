@@ -3,7 +3,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Rasoi — Fine Indian Kitchen",
-  description: "Scan. Order. Savour.",
+  description: "Scan. Order. Savour. Your premium dining companion.",
+  manifest: "/manifest.json",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Rasoi" },
+  other: { "mobile-web-app-capable": "yes" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
